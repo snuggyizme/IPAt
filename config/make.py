@@ -22,7 +22,7 @@ def newConfig(): # Create new
         print("Start of char/ipa pair.  Type the character(s), beginning with a capital:")
         soundOrSTOP = input("> ")
         if soundOrSTOP == "STOP":
-            break
+            done == True
         sound.append(soundOrSTOP)
 
         print("                         Type the character(s) in lowercase:")
