@@ -1,11 +1,11 @@
 import FreeSimpleGUI as fsGUI
 fsGUI.theme("LightGrey1")
 
-import tools as configTools
+from . import tools as configTools
 
 def makeConfig(LANG_NAME: str, MAX_SOUND_LENGTH: str, SOUNDS: dict): # Compile the variables into the config format
-    export = [f"{MAX_SOUND_LENGTH}|"]
-
+    export = [f"{MAX_SOUND_LENGTH}|"]                                # SEE: config/tools.py
+                                                                     # FOR FORMAT
     for character, ipa in SOUNDS.items():
                   export.append(f"c{character},ipa{ipa}$")
     
@@ -16,19 +16,18 @@ def makeConfig(LANG_NAME: str, MAX_SOUND_LENGTH: str, SOUNDS: dict): # Compile t
 def newConfig(): # Create new
     def createNewConfigLayout():
         return [[
-            fsGUI.Text("Create New Language"),
-            fsGUI.Button("Save and Continue")],
+            fsGUI.Text("Create New Language"),],
             [fsGUI.Text("Language Name:"), fsGUI.InputText(key="-LANG_NAME-")],
             [fsGUI.Text("Longest Graph:"), fsGUI.InputText(key="-MAX_SOUND_LENGTH-")],
-            [fsGUI.Button("<- Back")]
+            [fsGUI.Button("<- Back"), fsGUI.Button("Save and Continue")]
         ]
     
     def createAddSoundsLayout():
         return [[
             fsGUI.Text(f"Add sounds to {langName}:")],
-            [fsGUI.InputText("Character(s) (Uppercase):", key="-CHAR_CAP-")],
-            [fsGUI.InputText("Character(s) (Lowercase):", key="-CHAR_LOWER-")],
-            [fsGUI.InputText("IPA Symbol(s):", key="-IPA_SYMBOL-")],
+            [fsGUI.Text("Character(s) (Uppercase):"), fsGUI.InputText(key="-CHAR_CAP-")],
+            [fsGUI.Text("Character(s) (Lowercase):"), fsGUI.InputText(key="-CHAR_LOWER-")],
+            [fsGUI.Text("IPA Symbol(s):"),            fsGUI.InputText(key="-IPA_SYMBOL-")],
             [fsGUI.Button("Add Sound"), fsGUI.Button("Finish")]
         ]
 
@@ -70,3 +69,4 @@ def newConfig(): # Create new
     # ---- END Add Sounds Window ----
     
     makeConfig(langName, maxSoundLength, sounds)
+    fsGUI.popup("Config created successfully!", no_titlebar=True, keep_on_top=True, grab_anywhere=True)

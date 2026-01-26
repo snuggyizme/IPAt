@@ -11,4 +11,3 @@ A virtual environment is recommended
 ### Install all dependencies:
 
     pip install -r requirements.txt
-
