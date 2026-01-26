@@ -5,9 +5,10 @@ A tool that allows you to play through a series of words and generate IPA transl
 ## Installation
 
 This project uses **FreeSimpleGUI**
+
 A virtual environment is recommended
 
-*Steps:*
-Install dependencies:
+Install all dependencies:
+
     pip install -r requirements.txt
 
