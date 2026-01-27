@@ -7,7 +7,7 @@ def makeConfig(LANG_NAME: str, MAX_SOUND_LENGTH: str, SOUNDS: dict): # Compile t
     export = [f"{MAX_SOUND_LENGTH}|"]                                # SEE: config/tools.py
                                                                      # FOR FORMAT
     for character, ipa in SOUNDS.items():
-                  export.append(f"c{character},ipa{ipa}$")
+        export.append(f"c{character},ipa{ipa}$")
     
     export.append(f"|{LANG_NAME}")
 
@@ -68,5 +68,6 @@ def newConfig(): # Create new
             break
     # ---- END Add Sounds Window ----
     
-    makeConfig(langName, maxSoundLength, sounds)
     fsGUI.popup("Config created successfully!", no_titlebar=True, keep_on_top=True, grab_anywhere=True)
+    return makeConfig(langName, maxSoundLength, sounds)
+    

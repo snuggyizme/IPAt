@@ -16,9 +16,8 @@ def loadData():
         return json.load(f)
 
 def saveData(data: dict):
-    with open(dataFile, "w") as f:
-        json.dump(data, f, indent=2)
+    with open(dataFile, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
     
-data = loadData()
-print(data)
-
+langs = loadData()
+print(langs)

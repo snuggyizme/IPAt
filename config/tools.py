@@ -51,8 +51,19 @@ def extractLanguage(input: str):
     export["LANG_NAME"] = sections[2]
 
     sounds: list = sections[1].split("$")
+
     for sound in sounds:
-        splitSound: str = sound.split(",")
+        # Skip empty sounds
+        if not sound.strip():
+            continue
+            
+        splitSound: list = sound.split(",")
+        
+        # Must have 2 parts
+        if len(splitSound) < 2:
+            print(f"Warning: Invalid sound format '{sound}' - skipping")
+            continue
+           
         character: str = splitSound[0][1:]
         ipa: str = splitSound[1][3:]
 
