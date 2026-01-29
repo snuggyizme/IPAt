@@ -33,10 +33,10 @@ Click *'Save and Continue'*. You can now begin adding grapheme-phoneme pairs to 
 ![Alt: The 'Add Sounds' menu with the grapheme 'Th' and the phoneme 'θ'](https://raw.githubusercontent.com/snuggyizme/IPAt/main/img/5.png)
 
 ### 2. Selecting a Language
-Return to the homepage and select *'Create IPA for words'*, and then *'Select Language'*. Select the language you wish to use in IPAt.
+Return to the homepage and select *'Create IPA for words'*, and then *'Select Language'*. Select the language you wish to use in IPAt. English will always be avaliable.
 
 ![Alt: The navigation path from the hoempage to the 'Select Language' menu](https://raw.githubusercontent.com/snuggyizme/IPAt/main/img/6.png)
 
 ![](https://raw.githubusercontent.com/snuggyizme/IPAt/main/img/7.png)
 
-![Alt: Select language button](https://raw.githubusercontent.com/snuggyizme/IPAt/main/img/8.png)
+
