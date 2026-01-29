@@ -21,7 +21,7 @@ fsGUI.theme("LightGrey3")
 #       __/\\\\\\\\\\\_\/\\\_____________\/\\\_______\/\\\____\//\\\\\___ 
 #        _\///////////__\///______________\///________\///______\/////____
 
-langs: dict = data.langs
+LANGS: dict = data.langs
 
 def createHomeLayout():
     return [[fsGUI.Text("IPAt", font=("Arial", 60))], # Home
@@ -60,8 +60,8 @@ def main():
                     clipboardData = pyperclip.paste()
                     try:
                         extractedConfig = configTools.extractLanguage(clipboardData)
-                        langs[extractedConfig["LANG_NAME"]] = extractedConfig
-                        data.saveData(langs)
+                        LANGS[extractedConfig["LANG_NAME"]] = extractedConfig
+                        data.saveData(LANGS)
                         print(f"New language imported from clipboard: {extractedConfig["LANG_NAME"]}")
                     except Exception as x:
                         fsGUI.popup(f"Error importing config from clipboard", no_titlebar=True, keep_on_top=True, grab_anywhere=True)
@@ -71,10 +71,10 @@ def main():
                     newConfig = configTools.extractLanguage(makeConfig.newConfig())
                     if newConfig:
                         try:
-                            langs[newConfig["LANG_NAME"]] = makeConfig.makeConfig(newConfig["LANG_NAME"], newConfig["MAX_SOUND_LENGTH"], newConfig["SOUNDS"])
-                            data.saveData(langs)
+                            LANGS[newConfig["LANG_NAME"]] = makeConfig.makeConfig(newConfig["LANG_NAME"], newConfig["MAX_SOUND_LENGTH"], newConfig["SOUNDS"])
+                            data.saveData(LANGS)
 
-                            print(f"New language created: {langs[-1]['LANG_NAME']}")
+                            print(f"New language created: {newConfig['LANG_NAME']}")
                         except Exception as x:
                             fsGUI.popup(f"Error creating new config", no_titlebar=True, keep_on_top=True, grab_anywhere=True)
 
@@ -93,10 +93,50 @@ def main():
                 if SLoCWevent == "Select Language":
                     def createSelectLangLayout():
                         langButtons = []
-                        for lang in langs:
-                            langButtons.append([fsGUI.Button(lang["LANG_NAME"])])
+                        for lang in LANGS.values():
+                            langButtons.append([
+                                fsGUI.Text(configTools.extractLanguage(lang)["LANG_NAME"]),
+                                fsGUI.Push(),
+                                fsGUI.Button("Select", key=f"select_{configTools.extractLanguage(lang)['LANG_NAME']}"),
+                                fsGUI.Button("Inspect", key=f"inspect_{configTools.extractLanguage(lang)['LANG_NAME']}"),
+                                fsGUI.Button("Delete", key=f"delete_{configTools.extractLanguage(lang)['LANG_NAME']}")])
                         return [[fsGUI.Text("Select Language")]] + langButtons + [[fsGUI.Button("<- Back")]]
+                    
+                    slWindow = fsGUI.Window("IPAt - Select Language", createSelectLangLayout(), no_titlebar=True, grab_anywhere=True, keep_on_top=True)
 
+                    # ----   Select Language   ----
+                    while True:
+                        event, values = slWindow.read()
+                        if event == fsGUI.WIN_CLOSED or event == "<- Back": # Does redundant check, but whatever, copy paste go brrr
+                            slWindow.close()
+                            break
+                        
+                        if event.startswith("select_"):
+                            langName = event[len("select_"):]
+                            fsGUI.popup(f"Language '{langName}' selected!", no_titlebar=True, keep_on_top=True, grab_anywhere=True)
+                            SELECTED_LANGUAGE = LANGS[langName]
+                            slWindow.close()
+                            break
+
+                        if event.startswith("inspect_"):
+                            langName = event[len("inspect_"):]
+                            langData = LANGS[langName]
+
+                            fsGUI.Print(langData, no_titlebar=True, keep_on_top=True, grab_anywhere=True)
+                            slWindow.close()
+                            break
+
+                        if event.startswith("delete_"):
+                            langName = event[len("delete_"):]
+                            confirm = fsGUI.popup_yes_no(f"Are you sure you want to delete the language '{langName}'?", no_titlebar=True, keep_on_top=True, grab_anywhere=True)
+                            if confirm == "Yes":
+                                del LANGS[langName]
+                                data.saveData(LANGS)
+                                fsGUI.popup(f"Language '{langName}' deleted!", no_titlebar=True, keep_on_top=True, grab_anywhere=True)
+                                slWindow.close()
+                                break
+                    # ---- END Select Language ----
+                
                 if SLoCWevent == "Create Words":
                     pass
 

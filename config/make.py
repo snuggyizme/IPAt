@@ -17,17 +17,17 @@ def newConfig(): # Create new
     def createNewConfigLayout():
         return [[
             fsGUI.Text("Create New Language"),],
-            [fsGUI.Text("Language Name:"), fsGUI.InputText(key="-LANG_NAME-")],
-            [fsGUI.Text("Longest Graph:"), fsGUI.InputText(key="-MAX_SOUND_LENGTH-")],
+            [fsGUI.Text("Language Name:"), fsGUI.Push(), fsGUI.InputText(key="-LANG_NAME-")],
+            [fsGUI.Text("Longest Graph:"), fsGUI.Push(), fsGUI.InputText(key="-MAX_SOUND_LENGTH-")],
             [fsGUI.Button("<- Back"), fsGUI.Button("Save and Continue")]
         ]
     
     def createAddSoundsLayout():
         return [[
             fsGUI.Text(f"Add sounds to {langName}:")],
-            [fsGUI.Text("Character(s) (Uppercase):"), fsGUI.InputText(key="-CHAR_CAP-")],
-            [fsGUI.Text("Character(s) (Lowercase):"), fsGUI.InputText(key="-CHAR_LOWER-")],
-            [fsGUI.Text("IPA Symbol(s):"),            fsGUI.InputText(key="-IPA_SYMBOL-")],
+            [fsGUI.Text("Character(s) (Uppercase):"), fsGUI.Push(), fsGUI.InputText(key="-CHAR_CAP-")],
+            [fsGUI.Text("Character(s) (Lowercase):"), fsGUI.Push(), fsGUI.InputText(key="-CHAR_LOWER-")],
+            [fsGUI.Text("IPA Symbol(s):"), fsGUI.Push(), fsGUI.InputText(key="-IPA_SYMBOL-")],
             [fsGUI.Button("Add Sound"), fsGUI.Button("Finish")]
         ]
 
