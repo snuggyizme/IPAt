@@ -15,6 +15,6 @@ A virtual environment is recommended
 ## Usage
 
 To get started with IPAt, you need to select a language. If you have a conlang, head to *'Import/Create a language config'* and click *'Make new'*:
-![Alt: The navigation path from the homepage to the 'Make New' menu][https://github.com/snuggyizme/IPAt/img/1.png]
-![][https://github.com/snuggyizme/IPAt/img/2.png]
+![Alt: The navigation path from the homepage to the 'Make New' menu](https://github.com/snuggyizme/IPAt/img/1.png)
+![](https://github.com/snuggyizme/IPAt/img/2.png)
 
