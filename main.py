@@ -23,8 +23,11 @@ fsGUI.theme("LightGrey3")
 
 LANGS: dict = data.langs
 
-def createHomeLayout():
-    return [[fsGUI.Text("IPAt", font=("Arial", 60))], # Home
+# LAYOUTS
+# ----------------------------------------------
+
+def createHomeLayout():           # Home
+    return [[fsGUI.Text("IPAt", font=("Arial", 60))], 
             [fsGUI.Button("Import/Create a language config"),
              fsGUI.Button("Create IPA for words"),
              fsGUI.Button("Close")]]
@@ -38,6 +41,31 @@ def createSLoCWLayout():          # Select Languae or Create Words
     return [[fsGUI.Text("Select Language or Create Words")],
             [fsGUI.Button("Select Language"), fsGUI.Button("Create Words")],
             [fsGUI.Button("<- Back")]]
+
+def createSelectLangLayout():     # Select / Inspect / Delete Language
+    langButtons = []
+    for lang in LANGS.values():
+        langButtons.append([
+            fsGUI.Text(configTools.extractLanguage(lang)["LANG_NAME"]),
+            fsGUI.Push(),
+            fsGUI.Button("Select", key=f"select_{configTools.extractLanguage(lang)['LANG_NAME']}"),
+            fsGUI.Button("Inspect", key=f"inspect_{configTools.extractLanguage(lang)['LANG_NAME']}"),
+            fsGUI.Button("Delete", key=f"delete_{configTools.extractLanguage(lang)['LANG_NAME']}")])
+    return [[fsGUI.Text("Select Language")]] + langButtons + [[fsGUI.Button("<- Back")]]
+
+# ----------------------------------------------
+
+# FUNCS FOR MAIN APP
+# ----------------------------------------------
+
+def wordScroller(wordList: list, maxGraphLength: int):
+    FINISHED_WORDS: list = []
+
+    for word in wordList:
+        for char in word:
+            pass
+    
+    return FINISHED_WORDS
 
 def main():
     window = fsGUI.Window("IPAt", createHomeLayout(), no_titlebar=True, grab_anywhere=True, keep_on_top=True)
@@ -91,17 +119,6 @@ def main():
                 SLoCWevent, SLoCWvalues = SLoCWwindow.read()
 
                 if SLoCWevent == "Select Language":
-                    def createSelectLangLayout():
-                        langButtons = []
-                        for lang in LANGS.values():
-                            langButtons.append([
-                                fsGUI.Text(configTools.extractLanguage(lang)["LANG_NAME"]),
-                                fsGUI.Push(),
-                                fsGUI.Button("Select", key=f"select_{configTools.extractLanguage(lang)['LANG_NAME']}"),
-                                fsGUI.Button("Inspect", key=f"inspect_{configTools.extractLanguage(lang)['LANG_NAME']}"),
-                                fsGUI.Button("Delete", key=f"delete_{configTools.extractLanguage(lang)['LANG_NAME']}")])
-                        return [[fsGUI.Text("Select Language")]] + langButtons + [[fsGUI.Button("<- Back")]]
-                    
                     slWindow = fsGUI.Window("IPAt - Select Language", createSelectLangLayout(), no_titlebar=True, grab_anywhere=True, keep_on_top=True)
 
                     # ----   Select Language   ----
