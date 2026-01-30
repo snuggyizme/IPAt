@@ -28,14 +28,18 @@ SELECTED_LANGUAGE = None
 
 # VERSION
 # ----------------------------------------------
-VERSION = 0.34
+VERSION = 0.36
 
 def startUp():
     appData = data.loadData(file="appdata")
-    appData["version"] = VERSION
-    SELECTED_LANGUAGE = appData["lastLanguage"]
 
+    if appData["version"] == 0:
+        appData["lastLanguage"] = "English"
+
+    appData["version"] = VERSION
     data.saveData(appData, file="appdata")
+
+    SELECTED_LANGUAGE = appData["lastLanguage"]
 
 # ----------------------------------------------
 
@@ -93,7 +97,7 @@ def createPastePlaylistLayout():                    # Paste Playlist
 # MAIN APP
 # ----------------------------------------------
 
-def wordScroller(wordList: list, maxGraphLength: int):
+def wordScroller(maxGraphLength: int):
     mainWindow = fsGUI.Window("IPAt", createWordScrollerLayout(maxGraphLength), no_titlebar=True, grab_anywhere=True, keep_on_top=True)
 
     # ----   Main App Window   ----
@@ -121,11 +125,50 @@ def wordScroller(wordList: list, maxGraphLength: int):
                     break
             # ---- END Paste Playlist ----
 
-        for word in wordList:
-            for i in range(len(word)):
+        word = PLAYLIST[0]
+        FINISHED_WORDS.append("")
+        for i in range(len(word)):
+            while True:
                 left = word[0:i]
                 current = word[i]
                 right = word[i+1:]
+
+                mainWindow["-LEFT-"].update(left)
+                mainWindow["-CURRENT-"].update(current)
+                mainWindow["-RIGHT-"].update(right)
+
+                POSSIBLE_GRAPHS: dict = {}
+                LONGEST_POSSIBLE_GRAPH = 0
+
+                for j in SELECTED_LANGUAGE["SOUNDS"].keys():
+                    jUPPER = j[len(j)//2:len(j)]
+                    jLOWER = j[0:len(j)//2]
+
+                    if i == 0:
+                        casedJ = jUPPER
+                    else:
+                        casedJ = jLOWER
+
+                    if word[i:i+len(casedJ)] == casedJ:
+                        POSSIBLE_GRAPHS[len(casedJ)].append(casedJ)
+
+                        if len(casedJ) > LONGEST_POSSIBLE_GRAPH:
+                            LONGEST_POSSIBLE_GRAPH = len(casedJ)
+
+                for k in range(maxGraphLength):
+                    if k in POSSIBLE_GRAPHS:
+                        mainWindow[f"-GRAPH_{k}-"].update(disabled=False)
+                    if k > LONGEST_POSSIBLE_GRAPH:
+                        mainWindow[f"-GRAPH_{k}-"].update(disabled=True)
+
+                if event.startswith("-GRAPH_"):
+                    graphLength = int(event[len("-GRAPH_")])
+                    selectedGraph = word[i:i+graphLength]
+                    PLAYLIST[-0] += SELECTED_LANGUAGE["SOUNDS"][selectedGraph]
+                    
+
+                
+                
     
     # ---- END Main App Window ----
 
