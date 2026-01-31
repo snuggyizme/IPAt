@@ -27,7 +27,7 @@ SELECTED_LANGUAGE = None
 
 # VERSION
 # ----------------------------------------------
-VERSION = 0.40
+VERSION = 0.41
 
 def startUp():
     global SELECTED_LANGUAGE
@@ -110,6 +110,16 @@ def createPastePlaylistLayout():                    # Paste Playlist
             [fsGUI.Multiline(size=(40, 10), key="-PLAYLIST_INPUT-")],
             [fsGUI.Button("Add to Playlist"), fsGUI.Push(), fsGUI.Button("<- Back")]]
 
+def createSelectSoundLayout(soundOptions):          # Select Sound
+    t = [[fsGUI.Text("Sound Select:")]]
+    b = [[fsGUI.Button("<- Back"), fsGUI.Push()]]
+
+    c = []
+    for i in soundOptions:
+        c.append(fsGUI.Button(i, key=f"selectsound_{i}"))
+
+    return uiArray(t, b, c)
+
 # ----------------------------------------------
 
 # MAIN APP
@@ -142,49 +152,13 @@ def wordScroller(maxGraphLength: int):
                     clplWindow.close()
                     break
             # ---- END Paste Playlist ----
-                                                                                    # Need to comment this out it's confusing:
-                                                                                    # ----------------------------------------
-        word = PLAYLIST[0]                                                          # Get first word
-        FINISHED_WORDS.append("")                                                   # Prepare space
-        for i in range(len(word)):                                                  # For every character in the word:
-            while True:
-                left = word[0:i]                                                    # Get characters to left of current character
-                current = word[i]                                                   # Get current character
-                right = word[i+1:]                                                  # Get characters to right of current character
+        
+        for word in PLAYLIST:
+            for i in range(len(word)):
+                graphemeBalance = 0
+                char = i + graphemeBalance
+            
 
-                mainWindow["-LEFT-"].update(left)                                   # Update left characters
-                mainWindow["-CURRENT-"].update(current)                             # Update current character
-                mainWindow["-RIGHT-"].update(right)                                 # Update right characters
-
-                POSSIBLE_GRAPHS: dict = {}                                          # Reset the dictionary of possible graphs to select (key = Upper + Lower, value = IPA)
-                LONGEST_POSSIBLE_GRAPH = 0                                          # Reset the longest possible graph length. We need this to cut off all buttons that are too high.
-
-                for j in SELECTED_LANGUAGE["SOUNDS"].keys():                        # For every sound in the selected language:
-                    jUPPER = j[len(j)//2:len(j)]                                    # Get the upper case version of the graph
-                    jLOWER = j[0:len(j)//2]                                         # Get the lower case version of the graph
-
-                    if i == 0:                                                      # If we're at the start of the word, use the uppercase version of the grapheme
-                        casedJ = jUPPER
-                    else:                                                           # Otherwise, use the lowercase version of the grapheme
-                        casedJ = jLOWER
-
-                    if word[i:i+len(casedJ)] == casedJ:                             # If the word matches the current character and the following characters up to the length of the grapheme:
-                        POSSIBLE_GRAPHS[len(casedJ)].append(casedJ)                 # Add the grapheme to the possible graphs dictionary
-
-                        if len(casedJ) > LONGEST_POSSIBLE_GRAPH:                    # If this grapheme is longer than the current longest possible graph:
-                            LONGEST_POSSIBLE_GRAPH = len(casedJ)                    # Update the longest possible graph length to be this grapheme's length
-
-                for k in range(maxGraphLength):                                     # (Now out of the loop for every sound), for every grapheme length up to the max graph length:
-                    if k in POSSIBLE_GRAPHS:                                        # If there are possible graphs of this length:
-                        mainWindow[f"-GRAPH_{k}-"].update(disabled=False)           # Enable the button for this grapheme length
-                    if k > LONGEST_POSSIBLE_GRAPH:                                  
-                        mainWindow[f"-GRAPH_{k}-"].update(disabled=True)            # Otherwse, disable the button for this grapheme length
-
-                if event.startswith("-GRAPH_"):                                     # (Now out of the loop for every grapheme length), if the event is one of the grapheme length buttons:
-                    graphLength = int(event[len("-GRAPH_")])                        # Get the length of the grapheme from the button key
-                    selectedGraph = word[i:i+graphLength]                           # Get the selected grapheme from the word
-                    PLAYLIST[-0] += SELECTED_LANGUAGE["SOUNDS"][selectedGraph]      # Add the IPA for the selected grapheme to the finished words list
-                    
 
                 
                 
