@@ -6,9 +6,7 @@ IPAt is a GUI tool for batch-generating IPA transcriptions of wordlists using cu
 
 This project uses **FreeSimpleGUI** and **Pyperclip**
 
-A virtual environment is recommended
-
-### Install all dependencies:
+Install all dependencies with:
 
     pip install -r requirements.txt
 
