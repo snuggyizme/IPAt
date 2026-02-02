@@ -153,11 +153,40 @@ def wordScroller(maxGraphLength: int):
                     break
             # ---- END Paste Playlist ----
         
-        for word in PLAYLIST:
-            for i in range(len(word)):
-                graphemeBalance = 0
-                char = i + graphemeBalance
-            
+        for word in PLAYLIST:                                                           # Go through each word in the playlist
+            graphemeBalance = 0                                                         # Reset the counter for >1 character graphemes
+            soundOptions = []                                                           # Reset sound options for the new word
+
+            for s in range(len(word)):                                                  # Go through each character in the word
+                char = s + graphemeBalance                                              # Get current character in word, adjusted for grapheme balance
+                if char >= len(word):                                                   # If the character index is out of range:
+                    break                                                               # Break
+
+                for i in range(1, maxGraphLength + 1):                                  # Check for graphemes from length 1 to maxGraphLength
+                    grapheme = word[char:char + i]                                      # Get the grapheme from the word
+                    if grapheme in SELECTED_LANGUAGE["SOUNDS"]:                         # If the grapheme is in the language's sounds:
+                        graphemeBalance = i                                             # Set the grapheme balance to the length of the grapheme
+                        soundOptions.append(SELECTED_LANGUAGE["SOUNDS"][grapheme])      # Get the sound options for the grapheme
+                
+                for i in range(1, maxGraphLength + 1):                                  # Disable all buttons
+                    mainWindow[f"-GRAPH_{i}-"].update(disabled=True)
+                    if i == graphemeBalance:                                            # Enable the button for the current grapheme length
+                        mainWindow[f"-GRAPH_{i}-"].update(disabled=False)
+
+                mainWindow["-LEFT-"].update(word[0:char])                               # Update left text
+                mainWindow["-CURRENT-"].update(word[char])                              # Update current text
+                mainWindow["-RIGHT-"].update(word[char + 1:len(word)])                  # Update right text
+
+                if event == fsGUI.WIN_CLOSED or event == "<- Back":                     # Another break check because I can't tell if I need it or not
+                    break
+
+                if event.startswith("-GRAPH_"):
+                    if not True:
+                        pass
+
+                # ----   Select Sound   ----
+                
+
 
 
                 
